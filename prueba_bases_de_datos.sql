@@ -1,3 +1,6 @@
+-------------------------------- Parte 2: Creando el modelo en la base de datos
+
+
 -- Creacion base de datos prueba
 CREATE DATABASE prueba;
 
@@ -162,3 +165,28 @@ INSERT INTO factura_producto(cantidad,valor_total,factura_numero,producto_id) VA
 INSERT INTO factura_producto(cantidad,valor_total,factura_numero,producto_id) VALUES (1,14,9,8);
 /* Factura 10 */
 INSERT INTO factura_producto(cantidad,valor_total,factura_numero,producto_id) VALUES (1,77,10,4);
+
+
+
+---- Parte 3: Consultas
+
+
+-- ¿Que cliente realizó la compra más cara?
+
+SELECT nombre FROM clientes INNER JOIN facturas ON clientes.id=facturas.cliente_id WHERE facturas.total = (SELECT MAX(total) FROM facturas);
+
+/* La compra mas cara la realizó Juan Gabriel */
+
+
+-- ¿Que cliente pagó sobre 100 de monto?
+
+SELECT nombre FROM clientes INNER JOIN facturas ON clientes.id=facturas.cliente_id WHERE facturas.total > 100;
+
+/* Los clientes que compraron sobre 100 fueron Mauricio en una ocasión, Juan Perez en dos ocasiones y Juan Gabriel en una ocasión*/
+
+
+-- ¿Cuantos clientes han comprado el producto 6?
+
+SELECT nombre FROM clientes WHERE id IN (SELECT cliente_id FROM facturas WHERE numero IN (SELECT factura_numero FROM factura_producto INNER JOIN productos ON factura_producto.producto_id= productos.id WHERE factura_producto.producto_id = 6));
+
+/* Los clientes que han comprado el producto 6 son Juan Gabriel y Juan Perez */
